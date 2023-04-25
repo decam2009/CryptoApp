@@ -1,4 +1,4 @@
-package com.boriskaloshin.cryptoapp
+package com.boriskaloshin.cryptoapp.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -17,7 +17,7 @@ class CoinDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityCoinDetailBinding.inflate(layoutInflater)
+        _binding = ActivityCoinDetailBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         if (!intent.hasExtra(EXTRA_FROM_SYMBOL)) {
@@ -32,10 +32,10 @@ class CoinDetailActivity : AppCompatActivity() {
                 tvMinPrice.text = it.lowDay.toString()
                 tvMaxPrice.text = it.highDay.toString()
                 tvLastMarket.text = it.lastMarket
-                tvLastUpdate.text = it.getFormattedTime()
+                tvLastUpdate.text = it.lastUpdate
                 tvFromSymbol.text = it.fromSymbol
                 tvToSymbol.text = it.toSymbol
-                Picasso.get().load(it.getFullImageUrl()).into(ivLogoCoin)
+                Picasso.get().load(it.imageUrl).into(ivLogoCoin)
             }
         }
     }
