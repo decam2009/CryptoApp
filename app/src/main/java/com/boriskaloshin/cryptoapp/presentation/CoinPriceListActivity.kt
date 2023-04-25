@@ -12,15 +12,13 @@ import com.boriskaloshin.cryptoapp.domain.CoinInfo
 class CoinPriceListActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CoinViewModel
-    private var _binding: ActivityCoinPriceListBinding? = null
-    private val binding: ActivityCoinPriceListBinding
-        get() = _binding ?: throw RuntimeException("ActivityCoinPriceListBinding == null")
+    private val binding by lazy {
+        ActivityCoinPriceListBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityCoinPriceListBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
         val adapter = CoinInfoAdapter(applicationContext)
         adapter.onCoinInfoClickListener = object : CoinInfoAdapter.OnCoinInfoClickListener {
             override fun onClickListener(coinPriceInfo: CoinInfo) {
@@ -29,9 +27,10 @@ class CoinPriceListActivity : AppCompatActivity() {
             }
         }
         binding.rvCoinPriceList.adapter = adapter
+        binding.rvCoinPriceList.itemAnimator = null
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
         viewModel.coinInfoList.observe(this) {
-            adapter.coinInfoList = it
+            adapter.submitList(it)
         }
     }
 }
